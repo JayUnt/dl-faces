@@ -141,9 +141,15 @@
 		});
 		
 		let initIndex = getQueryString('i');
-		if( initIndex ){
-			showPerson(initIndex);
+		
+		if( initIndex > images.length )	{
+			initIndex = null;
 		}
+		
+		if( initIndex ){
+			showPerson(initIndex);		
+		}
+		
 		
 		$('#random-btn').on("click", showRandomPerson);		
 		function showRandomPerson(){
