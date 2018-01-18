@@ -62,7 +62,7 @@
 	<script>
 	$(function() {
 		let images = [
-			{ file: "-AECJQExjyEXKg_1516285374936.jpg", name: "Cory" },
+			{ file: "AECJQExjyEXKg_1516285374936.jpg", name: "Cory" },
 			{ file: "0AHLvhSXj0QM8w_1516301696035.jpg", name: "Teryl" },
 			{ file: "2gEhCLNBCRW6EQ_1516285581652.jpg", name: "Julia" },
 			{ file: "3QFb8_uTbCyD3Q_1516301580473.jpg", name: "Mike S" },
@@ -132,9 +132,12 @@
 			container.append(div);			
 		});
 		
+		let initIndex = getQueryString('i');
+		if( initIndex ){
+			showPerson(initIndex);
+		}
 		
-		$('#random-btn').on("click", showRandomPerson);
-		
+		$('#random-btn').on("click", showRandomPerson);		
 		function showRandomPerson(){
 		
 			if( visiblePerson ){
@@ -144,16 +147,27 @@
 			do{
 				randomIndex = Math.floor(Math.random() * images.length);				
 			}while( alreadyPicked.indexOf(randomIndex) >= 0 )
-						
-			alreadyPicked.push(randomIndex);			
+
+			showPerson(randomIndex);			
+		}
+		
+		function showPerson(index){
+			alreadyPicked.push(index);
 			
-			visiblePerson = $('#'+randomIndex);
+			visiblePerson = $('#'+index);
 			visiblePerson.addClass('visible');
 			
 			if( alreadyPicked.length == images.length ){
 				alreadyPicked = [];
 			}
 		}
+		
+		function getQueryString ( field ) {
+			var href = window.location.href;
+			var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+			var string = reg.exec(href);
+			return string ? string[1] : null;
+		};
 		
 	});
 	</script>
