@@ -1,0 +1,171 @@
+<html>
+  <head>
+    <meta name="generator"
+    content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
+    <title>Face Match</title>
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	
+	<style>
+	
+		#container{
+			height: 400px;
+		}
+	
+		.person{
+			position: relative;
+			float: none;
+			margin: 0 auto;
+			height: 400px;
+			width: 400px;
+			display: none;
+		}
+		
+		.person.visible{
+			display: block;
+		}
+		
+		img{
+			height: 100%;
+		}
+		
+		.blocker{
+			position: absolute;
+			top: 59px;
+			left: 0;
+			height: 341px;
+			width: 199px;
+			z-index: 2;
+			background-color: white;			
+		}
+
+		.blockquote{
+			text-align: right;
+			display: none;			
+		}
+		
+		.active .blocker{
+			display: none;
+		}
+		
+		.active .blockquote{
+			display: block;
+		}
+
+		
+	</style>
+  </head>
+  <body>
+	<script>
+	$(function() {
+		let images = [
+			{ file: "-AECJQExjyEXKg_1516285374936.jpg", name: "Cory" },
+			{ file: "0AHLvhSXj0QM8w_1516301696035.jpg", name: "Teryl" },
+			{ file: "2gEhCLNBCRW6EQ_1516285581652.jpg", name: "Julia" },
+			{ file: "3QFb8_uTbCyD3Q_1516301580473.jpg", name: "Mike S" },
+			{ file: "3QGyp_8O1XsDqA_1516285508431.jpg", name: "Ed" },
+			{ file: "7wGooMy9T3I5Vw_1516285826470.jpg", name: "Marisa" },
+			{ file: "aAG75NfNqCqn8A_1516301796285.jpg", name: "Yvette" },
+			{ file: "aQF5-NwLg40N4Q_1516301619005.jpg", name: "Nick" },
+			{ file: "BgEiv1uDI1qX0A_1516285452783.jpg", name: "Dennis" },
+			{ file: "BgGB8STQPZxqig_1516301743255.jpg", name: "Victor" },
+			{ file: "bwFfejgKskoxdA_1516285690858.jpg", name: "Jason" },
+			{ file: "dwEso7Lem1ERpA_1516285338327.jpg", name: "Carolyn" },
+			{ file: "eQFwlFHcWDfcpw_1516285789243.jpg", name: "Kajal" },
+			{ file: "ewEWESCwIZdd5A_1516301598381.jpg", name: "Nash" },
+			{ file: "EwH5Rfo0t6b1Mw_1516285537169.jpg", name: "Grace" },
+			{ file: "fwH2_DsFvwny0g_1516285483403.jpg", name: "Dave" },
+			{ file: "gQF4Js9sF3N-Dw_1516301766511.jpg", name: "Yasmine" },
+			{ file: "gQHKj1SvN4A3zg_1516285260044.jpg", name: "Beth" },
+			{ file: "hgEqLwy0UbMneA_1516285921113.jpg", name: "Mike Pip" },
+			{ file: "hQFz-VuuIWHvEw_1516285707976.jpg", name: "Kat" },
+			{ file: "JAHcBLGKIhK3yg_1516301712215.jpg", name: "Trish" },
+			{ file: "jQGGgl096vCajQ_1516285193795.jpg", name: "Alison" },
+			{ file: "lQFwEizAN3jLLw_1516285617857.jpg", name: "Jim C" },
+			{ file: "nwGp7IvYNj8Zhw_1516285239134.jpg", name: "Adrianna" },
+			{ file: "owHXlyqVBFKl1w_1516285744861.jpg", name: "Karen" },
+			{ file: "pwHWYVOnhtEenQ_1516285727407.jpg", name: "Kyle" },
+			{ file: "qgEZvGSuJ09H0A_1516301558525.jpg", name: "Mike R" },
+			{ file: "qgGx4NztJQWoNg_1516282735655.jpg", name: "Babu" },
+			{ file: "RQHFwa4u2LTw0g_1516285414807.jpg", name: "Danielle" },
+			{ file: "SgG056uocHp6Rw_1516285669755.jpg", name: "Jim M" },
+			{ file: "SwEz2fX0GYuJqQ_1516285313837.jpg", name: "Ben" },
+			{ file: "tgGVuYtyN65sTw_1516285639073.jpg", name: "Julie" },
+			{ file: "wAF3mbm_X67jJQ_1516285561239.jpg", name: "Joe" },
+			{ file: "xAHYugnwcNHkfA_1516301653401.jpg", name: "Rose" },
+			{ file: "yAEbVq8hGxIZeQ_1516285902860.jpg", name: "Mike Pal" },
+			{ file: "YwGr4TOy3rtduA_1516285857577.jpg", name: "Mark" },
+			{ file: "YwGr4TOy3rtduA_1516301636744.jpg", name: "Rob" },
+			{ file: "zQEiBuOcWGkvOQ_1516301672300.jpg", name: "Suzanne" },
+			{ file: "_wGX49oCbKXfQQ_1516301735242.jpg", name: "Victor" }
+		];
+		
+		let visiblePerson;
+		let alreadyPicked = [];
+		
+		let container = $("#container");
+		
+		$.each(images, function( index, person ) {
+			let div = $("<div/>")
+				.addClass('person')
+				.attr('id', index)
+				.addClass('center-block');
+			
+			div.hover(
+			  function() {
+				$( this ).addClass('active');
+			  }, function() {
+				$( this ).removeClass('active');
+			  }
+			);
+			
+			let img = $("<img/>").addClass("img-responsive").addClass("center-block").attr('src','compares/'+person.file);
+			let blocker = $("<div/>").addClass("blocker");
+			let blockquote = $("<blockquote/>").addClass('blockquote');
+			let footer = $('<footer/>').addClass("blockquote-footer").text(person.name);
+			blockquote.append(footer);
+						
+			div.append(img).append(blocker).append(blockquote);
+			container.append(div);			
+		});
+		
+		
+		$('#random-btn').on("click", showRandomPerson);
+		
+		function showRandomPerson(){
+		
+			if( visiblePerson ){
+				visiblePerson.removeClass('visible');
+			}
+			let randomIndex
+			do{
+				randomIndex = Math.floor(Math.random() * images.length);				
+			}while( alreadyPicked.indexOf(randomIndex) >= 0 )
+						
+			alreadyPicked.push(randomIndex);			
+			
+			visiblePerson = $('#'+randomIndex);
+			visiblePerson.addClass('visible');
+			
+			if( alreadyPicked.length == images.length ){
+				alreadyPicked = [];
+			}
+		}
+		
+	});
+	</script>
+  
+	
+	<div class="jumbotron">
+		<div id="container"></div>
+	</div>
+		
+	<div id="button-group">
+		<button id="random-btn" type="button" class="btn btn-primary btn-lg btn-block">Pick Random DLer</button>  
+	</div>
+  
+  </body>
+</html>
